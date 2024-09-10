@@ -13,11 +13,25 @@ fun main() {
                 "onSale" to true,
                 "details" to arrayOf("50% cotton", "30% wool", "20% polyester"),
                 "variants" to arrayOf(
-                    json("id" to 2234, "color" to "green"),
-                    json("id" to 2235, "color" to "blue")
+                    json("id" to 2234, "color" to "green", "image" to "./assets/images/socks_green.jpg"),
+                    json("id" to 2235, "color" to "blue", "image" to "./assets/images/socks_blue.jpg")
                 ),
-                "sizes" to arrayOf("S", "M", "L", "XL")
+                "cart" to 0
             )
         }
+        methods = json(
+            "addToCart" to {
+                js("this").cart += 1
+            },
+            "removeFromCart" to {
+                val self = js("this")
+                if (self.cart >= 1) {
+                    self.cart -= 1
+                }
+            },
+            "updateImage" to { variantImage: String ->
+                js("this").image = variantImage
+            }
+        )
     }
 }
