@@ -9,7 +9,9 @@ fun main() {
         data = {
             json("product" to "Socks",
                 "image" to "./assets/images/socks_green.jpg",
-                "url" to "https://www.vuemastery.com/")
+                "inventory" to 8,
+                "onSale" to true
+            )
         }
     }
 }
