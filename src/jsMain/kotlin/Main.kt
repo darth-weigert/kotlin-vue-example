@@ -8,7 +8,8 @@ fun main() {
     window.asDynamic()["app"] = createApp {
         data = {
             json("product" to "Socks",
-                "description" to "A warm fuzzy pair of socks.")
+                "image" to "./assets/images/socks_green.jpg",
+                "url" to "https://www.vuemastery.com/")
         }
     }
 }
