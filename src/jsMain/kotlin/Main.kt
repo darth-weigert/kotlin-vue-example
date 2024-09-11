@@ -9,7 +9,7 @@ fun main() {
         data = {
             json("product" to "Socks",
                 "image" to "./assets/images/socks_green.jpg",
-                "inventory" to 8,
+                "inStock" to false,
                 "onSale" to true,
                 "details" to arrayOf("50% cotton", "30% wool", "20% polyester"),
                 "variants" to arrayOf(
@@ -22,12 +22,6 @@ fun main() {
         methods = json(
             "addToCart" to {
                 js("this").cart += 1
-            },
-            "removeFromCart" to {
-                val self = js("this")
-                if (self.cart >= 1) {
-                    self.cart -= 1
-                }
             },
             "updateImage" to { variantImage: String ->
                 js("this").image = variantImage
