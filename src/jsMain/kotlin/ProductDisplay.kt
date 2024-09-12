@@ -9,7 +9,9 @@ import kotlinx.html.button
 import kotlinx.html.div
 import kotlinx.html.h1
 import kotlinx.html.img
+import kotlinx.html.li
 import kotlinx.html.p
+import kotlinx.html.ul
 import kotlin.js.json
 
 fun productDisplay() {
@@ -41,8 +43,12 @@ fun productDisplay() {
                         p {
                             +"Shipping: {{ shipping }}"
                         }
-                        productDetails {
-                            vueBind["details"] = "details"
+                        ul {
+                            li {
+                                vueFor("detail in details")
+                                vueBind["key"] = "detail"
+                                +"{{ detail }}"
+                            }
                         }
                         div(classes = "color-circle") {
                             vueFor("(variant, index) in variants")
@@ -55,6 +61,12 @@ fun productDisplay() {
                             vueBind["disabled"] = "!inStock"
                             vueOn.click("addToCart")
                             +"Add to Cart"
+                        }
+                        button(classes="button") {
+                            vueBind["class"] = "{ 'disabled-button': !inStock }"
+                            vueBind["disabled"] = "!inStock"
+                            vueOn.click("removeFromCart")
+                            +"Remove Item"
                         }
                     }
                 }
@@ -80,7 +92,12 @@ fun productDisplay() {
         }
         methods = json(
             "addToCart" to {
-                js("this").cart += 1
+                val self = js("this")
+                self.`$emit`("add-to-cart", self.variants[self.selectedVariant].id)
+            },
+            "removeFromCart" to {
+                val self = js("this")
+                self.`$emit`("remove-from-cart", self.variants[self.selectedVariant].id)
             },
             "updateVariant" to { index: Int ->
                 js("this").selectedVariant = index
