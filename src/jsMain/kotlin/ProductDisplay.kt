@@ -12,6 +12,7 @@ import kotlinx.html.img
 import kotlinx.html.li
 import kotlinx.html.p
 import kotlinx.html.ul
+import kotlin.js.Json
 import kotlin.js.json
 
 fun productDisplay() {
@@ -62,13 +63,14 @@ fun productDisplay() {
                             vueOn.click("addToCart")
                             +"Add to Cart"
                         }
-                        button(classes="button") {
-                            vueBind["class"] = "{ 'disabled-button': !inStock }"
-                            vueBind["disabled"] = "!inStock"
-                            vueOn.click("removeFromCart")
-                            +"Remove Item"
-                        }
                     }
+                }
+                reviewList {
+                    vueIf("reviews.length")
+                    vueBind["reviews"] = "reviews"
+                }
+                reviewForm {
+                    vueOn["review-submitted"] = "addReview"
                 }
             }
         }
@@ -88,6 +90,7 @@ fun productDisplay() {
                     ),
                     json("id" to 2235, "color" to "blue", "image" to "./assets/images/socks_blue.jpg", "quantity" to 0)
                 ),
+                "reviews" to emptyArray<Json>()
             )
         }
         methods = json(
@@ -95,12 +98,11 @@ fun productDisplay() {
                 val self = js("this")
                 self.`$emit`("add-to-cart", self.variants[self.selectedVariant].id)
             },
-            "removeFromCart" to {
-                val self = js("this")
-                self.`$emit`("remove-from-cart", self.variants[self.selectedVariant].id)
-            },
             "updateVariant" to { index: Int ->
                 js("this").selectedVariant = index
+            },
+            "addReview" to { review: Json ->
+                js("this").reviews.push(review)
             }
         )
         computed = json(

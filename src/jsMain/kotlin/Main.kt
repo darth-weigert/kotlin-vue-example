@@ -13,17 +13,12 @@ val app = createApp {
         "updateCart" to { id: Int ->
             js("this").cart.push(id)
         },
-        "removeById" to { id: Int ->
-            val self = js("this")
-            val index = self.cart.indexOf(id)
-            if (index > -1) {
-                self.cart.splice(index, 1)
-            }
-        }
     )
 }
 
 fun main() {
     productDisplay()
+    reviewForm()
+    reviewList()
     window.asDynamic()["app"] = app
 }
